@@ -13,3 +13,6 @@ input {
     width: 600px;
     background-color: rgb(225, 225, 225);
 }
+.done {
+    text-decoration: line-through!important;
+}

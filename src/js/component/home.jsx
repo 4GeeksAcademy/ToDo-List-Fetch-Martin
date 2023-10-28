@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
-
-//create your first component
 const Home = () => {
 	const [inputValue, setInputValue] = useState("");
 	const [task, setTask] = useState([]);
+	const [isChecked, setIsChecked] = useState(false);
+	const handleOnChange = () => {
+		setIsChecked(!isChecked);
+	  };
+	const s = task.length>1 ? "s" : "";
+
 	return (
 		<div className="container mt-3 text-center">
 			<h1 className="mt-4">ToDo</h1>
@@ -26,14 +28,27 @@ const Home = () => {
 					}
 				  }}
 				  aria-label="Recipient's username"/>
-                 <button type="button" class="btn btn-primary float-end ms-auto btn-sm btn-pad">Add</button>
+                 <button
+				  type="button"
+				  onClick={() => {
+					setTask(task.concat(inputValue));
+					setInputValue("");
+				}}
+				  class="btn btn-primary float-end ms-auto btn-sm btn-pad">
+					Add
+				 </button>
 				
 				</li>
 				
 				{task.map((item, index) => (
         
-						 <li className="list-group-item d-flex align-items-center py-3">
-						 <input className="form-check-input me-3" type="checkbox" value="" aria-label="" />
+						 <li className={isChecked ? "list-group-item d-flex align-items-center py-3 done" : "list-group-item d-flex align-items-center py-3"}>
+						 <input
+						    className="form-check-input me-3"
+							type="checkbox"
+							checked={isChecked}
+          					onChange={handleOnChange}
+						 />
 						 {item}
 						 <button
 							type="button"
@@ -51,7 +66,7 @@ const Home = () => {
 					 </li> 
                  ))}
 
-				<div className="list-group-item d-flex align-items-center py-3 t-counter">4 tasks</div>
+				<div className="list-group-item d-flex align-items-center py-3 t-counter">{task.length} task{s}</div>
 				</ul>
 				
 		</div>
