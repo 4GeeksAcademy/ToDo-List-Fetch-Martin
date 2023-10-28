@@ -3,10 +3,6 @@ import React, { useState } from "react";
 const Home = () => {
 	const [inputValue, setInputValue] = useState("");
 	const [task, setTask] = useState([]);
-	const [isChecked, setIsChecked] = useState(false);
-	const handleOnChange = () => {
-		setIsChecked(!isChecked);
-	  };
 	const s = task.length>1 ? "s" : "";
 
 	return (
@@ -42,13 +38,8 @@ const Home = () => {
 				
 				{task.map((item, index) => (
         
-						 <li className={isChecked ? "list-group-item d-flex align-items-center py-3 done" : "list-group-item d-flex align-items-center py-3"}>
-						 <input
-						    className="form-check-input me-3"
-							type="checkbox"
-							checked={isChecked}
-          					onChange={handleOnChange}
-						 />
+						 <li className="list-group-item d-flex align-items-center py-3">
+						
 						 {item}
 						 <button
 							type="button"
@@ -66,7 +57,7 @@ const Home = () => {
 					 </li> 
                  ))}
 
-				<div className="list-group-item d-flex align-items-center py-3 t-counter">{task.length} task{s}</div>
+				<div className="list-group-item d-flex align-items-center py-3 t-counter">{task.length} task{s} left</div>
 				</ul>
 				
 		</div>
