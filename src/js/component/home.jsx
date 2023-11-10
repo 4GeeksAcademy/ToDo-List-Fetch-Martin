@@ -33,6 +33,11 @@ const Home = () => {
 				  class="btn btn-primary float-end ms-auto btn-sm btn-pad">
 					Add
 				 </button>
+				 <button
+				 type="button"
+				 className="btn btn-secondary float-end ms-2 btn-sm btn-pad text-nowrap">
+					Delete All
+				 </button>
 				
 				</li>
 				
