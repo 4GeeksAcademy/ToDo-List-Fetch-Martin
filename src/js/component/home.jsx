@@ -1,19 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Home = () => {
 	const [inputValue, setInputValue] = useState("");
 	const [task, setTask] = useState([]);
 	const s = task.length>1 ? "s" : "";
 
+useEffect(() => {
+	const request = async () => {
+		const res = await fetch('https://playground.4geeks.com/apis/fake/todos/user/klassicstudio', {
+			method: "POST",
+			body: JSON.stringify([]),
+			headers: {
+			  "Content-Type": "application/json"
+			}
+		  })
+		  
+		  const data = await res.json()
+		  console.log(data)
+	}
+	request()
+
+}, [])
+
+useEffect(() => {
+	const request = async () => {
+		const res = await fetch('https://playground.4geeks.com/apis/fake/todos/user/klassicstudio')
+		const data = await res.json()
+		  console.log(data)
+	}
+	request()
+
+}, [])
+// Class Video at 38:02 
 	return (
 		<div className="container mt-3 text-center">
 			<h1 className="mt-4">ToDo</h1>
 			<h5 className="my-3">Task organizer</h5>
-			<ul class="list-group d-flex align-items-center">
-			<li class="list-group-item d-flex align-items-center py-3">
+			<ul className="list-group d-flex align-items-center">
+			<li className="list-group-item d-flex align-items-center py-3">
 			     <input
+				  id="taskInput"
 				  type="text"
-				  class="form-control me-5"
+				  className="form-control me-5"
 				  onChange={(e) => setInputValue(e.target.value)}
 				  placeholder="Type your task"
 				  value={inputValue}
@@ -30,7 +58,7 @@ const Home = () => {
 					setTask(task.concat(inputValue));
 					setInputValue("");
 				}}
-				  class="btn btn-primary float-end ms-auto btn-sm btn-pad">
+				  className="btn btn-primary float-end ms-auto btn-sm btn-pad">
 					Add
 				 </button>
 				 <button
