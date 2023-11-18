@@ -1,9 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Home = () => {
 	const [inputValue, setInputValue] = useState("");
 	const [tasks, setTasks] = useState([]);
 	const s = tasks.length>1 ? "s" : "";
+
+
+	useEffect(() => {
+		const request = async () => {
+			const res = await fetch("https://playground.4geeks.com/apis/fake/todos/user/tincho", {
+				method: "POST",
+				body: JSON.stringify([]),
+				headers: {
+					"Content-Type": "application/json"
+				  }
+			})
+			const data = await res.json()
+			console.log(data)
+		}
+		request();
+
+	}, [])
+
+	useEffect(() => {
+		const getDb = async () => {
+			const res = await fetch("https://playground.4geeks.com/apis/fake/todos/user/tincho")
+			const data = await res.json()
+			setTasks(data)
+			console.log('Get DB: ',data)
+		}
+		getDb();
+
+	}, [])
 
 	return (
 		<div className="container mt-3 text-center">
@@ -36,11 +64,13 @@ const Home = () => {
 				
 				</li>
 				
-				{tasks.map((item, index) => (
+				{tasks.map(({id, label}, index) => (
         
-						 <li className="list-group-item d-flex align-items-center py-3">
+						 <li className="list-group-item d-flex align-items-center py-3"
+						     key={`${id}`}
+						 >
 						
-						 {item}
+						 {label}
 						 <button
 							type="button"
 							onClick={() => {
