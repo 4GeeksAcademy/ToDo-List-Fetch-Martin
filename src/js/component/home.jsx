@@ -4,8 +4,51 @@ const Home = () => {
 	const [inputValue, setInputValue] = useState("");
 	const [tasks, setTasks] = useState([]);
 	const s = tasks.length>1 ? "s" : "";
+	let counter = 1;
 
+	const deleteAll = async () => {
+		await fetch("https://playground.4geeks.com/apis/fake/todos/user/tincho", {
+				method: "DELETE",
+			})
 
+			setTasks([])
+	}
+
+	const addTask = async () => {
+		const newTask = {
+			id: counter,
+			done: false,
+			label: inputValue
+		}
+		counter += 1;
+		const newTasks = [...tasks, newTask]
+		const res = await fetch("https://playground.4geeks.com/apis/fake/todos/user/tincho", {
+				method: "PUT",
+				body: JSON.stringify(newTasks),
+				headers: {
+					"Content-Type": "application/json"
+				  }
+			})
+		setTasks(newTasks)
+		setInputValue("");
+	}
+
+	const deleteTask = async (index) => {
+		const reducedTask = [...tasks];
+		reducedTask.splice(index, 1);
+		
+		const res = await fetch("https://playground.4geeks.com/apis/fake/todos/user/tincho", {
+				method: "PUT",
+				body: JSON.stringify(reducedTask),
+				headers: {
+					"Content-Type": "application/json"
+				  }
+			})
+			setTasks(reducedTask);
+
+	}
+
+    // Creating the database for the assigned user
 	useEffect(() => {
 		const request = async () => {
 			const res = await fetch("https://playground.4geeks.com/apis/fake/todos/user/tincho", {
@@ -22,6 +65,7 @@ const Home = () => {
 
 	}, [])
 
+    // Getting the data from the database
 	useEffect(() => {
 		const getDb = async () => {
 			const res = await fetch("https://playground.4geeks.com/apis/fake/todos/user/tincho")
@@ -45,42 +89,32 @@ const Home = () => {
 				  onChange={(e) => setInputValue(e.target.value)}
 				  placeholder="Type your task"
 				  value={inputValue}
-				  onKeyUp={(e) => {
-					if(e.key === "Enter") {
-						setTasks(tasks.concat(inputValue));
-						setInputValue("");
-					}
-				  }}
 				  aria-label="Recipient's username"/>
                  <button
 				  type="button"
-				  onClick={() => {
-					setTasks(tasks.concat(inputValue));
-					setInputValue("");
-				}}
+				  onClick={addTask}
 				  className="btn btn-primary float-end ms-auto btn-sm btn-pad">
 					Add
+				 </button>
+				 <button
+				  type="button"
+				  onClick={deleteAll}
+				  className="btn btn-secondary float-end ms-3 btn-sm btn-pad text-nowrap">
+					Delete All
 				 </button>
 				
 				</li>
 				
-				{tasks.map(({id, label}, index) => (
+				{tasks.map((data, index) => (
         
 						 <li className="list-group-item d-flex align-items-center py-3"
-						     key={`${id}`}
+						     key={`${data.id}`}
 						 >
 						
-						 {label}
+						{`${index + 1} - `} {data.label}
 						 <button
 							type="button"
-							onClick={() => {
-								setTasks(
-									tasks.filter(
-										(t, currentIndex) =>
-										index != currentIndex
-									)
-								)
-							}}
+							onClick={() => deleteTask(index)}
 							className="btn btn-danger float-end ms-auto btn-sm">
 							Delete
 						 </button>
