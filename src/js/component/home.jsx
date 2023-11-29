@@ -7,12 +7,20 @@ const Home = () => {
 	let counter = 1;
 
 	const deleteAll = async () => {
-		await fetch("https://playground.4geeks.com/apis/fake/todos/user/tincho", {
+		try {
+			const res = await fetch("https://playground.4geeks.com/apis/fake/todos/user/tincho", {
 				method: "DELETE",
-			})
-
-			setTasks([])
-	}
+			});
+	
+			if (res.ok) {
+				setTasks([]);
+			} else {
+				console.error(`Failed to delete tasks. Status: ${res.status}`);
+			}
+		} catch (error) {
+			console.error("Error deleting tasks:", error);
+		}
+	};
 
 	const addTask = async () => {
 		const newTask = {
